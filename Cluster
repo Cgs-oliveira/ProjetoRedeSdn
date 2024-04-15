@@ -1,0 +1,58 @@
+{
+    "name": "onos",
+"storage": [
+{
+    "id": "atomix-1",
+    "ip": "10.192.19.111",
+    "port": 5679
+},
+{
+    "id": "atomix-2",
+    "ip": "10.192.19.112",
+    "port": 5679
+},
+{
+    "id": "atomix-3",
+    "ip": "10.192.19.113",
+    "port": 5679
+}
+]
+}
+
+
+cluster {
+    cluster-id: onos
+    node {
+        id: atomix-1
+        address: "10.192.19.111:5679"
+    }
+    discovery {
+        type: bootstrap
+        nodes.1 {
+            id: atomix-1
+            address: "10.192.19.111:5679"
+    }
+    nodes.2 {
+        id: atomix-2
+        address: "10.192.19.112:5679"
+    }
+    nodes.3 {
+        id: atomix-3
+        address: "10.192.19.113:5679"
+    }
+    }
+    }
+    
+    management-group {
+        type: raft
+        partitions: 1
+        storage.level: disk
+        members: [atomix-1, atomix-2, atomix-3]
+    }
+    
+    partition-groups.raft {
+        type: raft
+        partitions: 3
+        storage.level: disk
+        members: [atomix-1, atomix-2, atomix-3]
+    }
